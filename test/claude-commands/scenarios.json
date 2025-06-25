@@ -1,0 +1,34 @@
+{
+    "basic": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "claude-commands": {}
+        }
+    },
+    "with_repo": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "claude-commands": {
+                "repo": "octocat/Hello-World",
+                "branch": "master"
+            }
+        }
+    },
+    "with_nonexistent_repo": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "claude-commands": {
+                "repo": "nonexistent/nonexistent-repo"
+            }
+        }
+    },
+    "alpine_base": {
+        "image": "mcr.microsoft.com/devcontainers/base:alpine",
+        "features": {
+            "claude-commands": {
+                "repo": "octocat/Hello-World",
+                "branch": "master"
+            }
+        }
+    }
+}
