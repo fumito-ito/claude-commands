@@ -1,0 +1,31 @@
+{
+    "id": "claude-config",
+    "version": "1.0.0",
+    "name": "Claude Repository",
+    "description": "Clones a GitHub repository into .claude directory for Claude integration",
+    "options": {
+        "repo": {
+            "type": "string",
+            "description": "GitHub repository in format 'owner/repo' to clone into .claude directory",
+            "default": ""
+        },
+        "branch": {
+            "type": "string",
+            "description": "Branch to clone (default: main)",
+            "default": "main"
+        },
+        "token": {
+            "type": "string",
+            "description": "GitHub Personal Access Token for private repositories (optional)",
+            "default": ""
+        }
+    },
+    "containerEnv": {
+        "CLAUDE_REPO": "${repo}",
+        "CLAUDE_BRANCH": "${branch}",
+        "CLAUDE_TOKEN": "${token}"
+    },
+    "dependencies": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}

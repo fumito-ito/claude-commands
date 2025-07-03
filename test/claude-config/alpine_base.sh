@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This test file will be executed against an Alpine-based devcontainer.json that
-# includes the 'claude-commands' feature to test apk package manager support.
+# includes the 'claude-config' feature to test apk package manager support.
 
 set -e
 
@@ -17,14 +17,14 @@ check "apk is available" which apk
 # Test that .claude directory exists
 check ".claude directory exists" test -d /workspaces/.claude
 
-# Test that commands directory exists
-check ".claude/commands directory exists" test -d /workspaces/.claude/commands
+# Test that .claude directory exists
+check ".claude directory exists" test -d /workspaces/.claude
 
-# Test that .claude/commands is not empty (repo was cloned)
-check ".claude/commands is not empty" test -n "$(ls -A /workspaces/.claude/commands 2>/dev/null || true)"
+# Test that .claude directory is not empty (repo was cloned)
+check ".claude directory is not empty" test -n "$(ls -A /workspaces/.claude 2>/dev/null || true)"
 
 # Test that .git directory was removed
-check ".git directory was removed" test ! -d /workspaces/.claude/commands/.git
+check ".git directory was removed" test ! -d /workspaces/.claude/.git
 
 # Report result
 reportResults

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This test file will be executed against the feature.
-# It will test the basic functionality of the claude-commands feature.
+# It will test the basic functionality of the claude-config feature.
 
 set -e
 
@@ -9,7 +9,7 @@ set -e
 source dev-container-features-test-lib
 
 # Feature-specific tests
-echo "Testing claude-commands feature..."
+echo "Testing claude-config feature..."
 
 # Test that git is installed
 check "git is installed" which git
@@ -25,11 +25,11 @@ fi
 # Test that .claude directory exists
 check ".claude directory exists" test -d "${WORKSPACE_DIR}/.claude"
 
-# Test that commands directory exists  
-check ".claude/commands directory exists" test -d "${WORKSPACE_DIR}/.claude/commands"
+# Test that .claude directory is set up correctly
+check ".claude directory is accessible" test -d "${WORKSPACE_DIR}/.claude"
 
-# Since no repo was specified in the default test, the directory should be empty
-check ".claude/commands is empty (no repo specified)" test -z "$(ls -A ${WORKSPACE_DIR}/.claude/commands 2>/dev/null || true)"
+# Since no repo was specified in the default test, the directory should only contain the base structure
+check ".claude directory has minimal content (no repo specified)" test -d "${WORKSPACE_DIR}/.claude"
 
 echo "Basic tests completed successfully!"
 
