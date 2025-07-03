@@ -1,10 +1,10 @@
-# Claude Repository Feature
+# Claude Code config Feature
 
 This repository contains a [Dev Container Feature](https://containers.dev/implementors/features/) that clones GitHub repositories into the `.claude` directory for Claude integration.
 
 ## Contents
 
-- `src/claude-config`: The Claude Repository feature
+- `src/claude-code-config`: The Claude Repository feature
 - `test`: Automated tests for the feature
 
 ## Usage
@@ -13,7 +13,7 @@ To use this feature in your devcontainer, add it to your `devcontainer.json` fil
 
 ```json
 "features": {
-    "ghcr.io/fumito-ito/devcontainer-features/claude-config:1.0": {
+    "ghcr.io/fumito-ito/devcontainer-features/claude-code-config:1.0": {
         "repo": "owner/repository-name",
         "branch": "main",
         "token": "your-github-token"
@@ -48,7 +48,7 @@ You can build and test the feature using the [dev container CLI](https://github.
 
 ```bash
 # Test the feature
-devcontainer features test -f claude-config .
+devcontainer features test -f claude-code-config .
 ```
 
 ## License

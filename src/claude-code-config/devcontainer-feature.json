@@ -1,5 +1,5 @@
 {
-    "id": "claude-config",
+    "id": "claude-code-config",
     "version": "1.0.0",
     "name": "Claude Repository",
     "description": "Clones a GitHub repository into .claude directory for Claude integration",

@@ -2,13 +2,13 @@
     "basic": {
         "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
         "features": {
-            "claude-config": {}
+            "claude-code-config": {}
         }
     },
     "with_repo": {
         "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
         "features": {
-            "claude-config": {
+            "claude-code-config": {
                 "repo": "octocat/Hello-World",
                 "branch": "master"
             }
@@ -17,7 +17,7 @@
     "with_nonexistent_repo": {
         "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
         "features": {
-            "claude-config": {
+            "claude-code-config": {
                 "repo": "nonexistent/nonexistent-repo"
             }
         }
@@ -25,10 +25,16 @@
     "alpine_base": {
         "image": "mcr.microsoft.com/devcontainers/base:alpine",
         "features": {
-            "claude-config": {
+            "claude-code-config": {
                 "repo": "octocat/Hello-World",
                 "branch": "master"
             }
+        }
+    },
+    "existing_directory": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "claude-code-config": {}
         }
     }
 }

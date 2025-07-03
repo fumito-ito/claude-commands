@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This test file will be executed against a devcontainer.json that
-# includes the 'claude-config' feature with a nonexistent repository.
+# includes the 'claude-code-config' feature with a nonexistent repository.
 # This should fail gracefully without breaking the container.
 
 set -e

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This test file will be executed against the feature.
-# It will test the basic functionality of the claude-config feature.
+# It will test the basic functionality of the claude-code-config feature.
 
 set -e
 
@@ -9,7 +9,7 @@ set -e
 source dev-container-features-test-lib
 
 # Feature-specific tests
-echo "Testing claude-config feature..."
+echo "Testing claude-code-config feature..."
 
 # Test that git is installed
 check "git is installed" which git

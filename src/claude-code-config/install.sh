@@ -9,6 +9,13 @@ BRANCH=${BRANCH:-"${CLAUDE_BRANCH:-"main"}"}
 
 echo "Installing Claude Repository feature..."
 
+# Check if .claude directory already exists
+if [ -d "/workspaces/.claude" ]; then
+    echo ".claude directory already exists at /workspaces/.claude"
+    echo "Claude Code settings are already installed!"
+    exit 0
+fi
+
 # Create .claude directory in workspace
 mkdir -p /workspaces/.claude
 

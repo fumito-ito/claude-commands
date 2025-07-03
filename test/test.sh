@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# This script runs all tests for the claude-config feature
+# This script runs all tests for the claude-code-config feature
 
 set -e
 
 cd "$(dirname "$0")/.."
 
-echo "Running tests for claude-config feature..."
+echo "Running tests for claude-code-config feature..."
 
 # Check if devcontainer CLI is available
 if ! command -v devcontainer &> /dev/null; then
@@ -18,22 +18,22 @@ fi
 
 # Check directory structure
 echo "Checking directory structure..."
-if [ ! -d "src/claude-config" ]; then
-    echo "Error: src/claude-config directory not found!"
+if [ ! -d "src/claude-code-config" ]; then
+    echo "Error: src/claude-code-config directory not found!"
     echo "Please ensure the correct directory structure:"
-    echo "  src/claude-config/devcontainer-feature.json"
-    echo "  src/claude-config/install.sh"
+    echo "  src/claude-code-config/devcontainer-feature.json"
+    echo "  src/claude-code-config/install.sh"
     exit 1
 fi
 
-if [ ! -d "test/claude-config" ]; then
-    echo "Error: test/claude-config directory not found!"
-    echo "Please ensure test files are in test/claude-config/"
+if [ ! -d "test/claude-code-config" ]; then
+    echo "Error: test/claude-code-config directory not found!"
+    echo "Please ensure test files are in test/claude-code-config/"
     exit 1
 fi
 
 # Run tests for the specific feature
-echo "Running tests for claude-config feature..."
-devcontainer features test --features claude-config
+echo "Running tests for claude-code-config feature..."
+devcontainer features test --features claude-code-config
 
 echo "All tests completed!"
