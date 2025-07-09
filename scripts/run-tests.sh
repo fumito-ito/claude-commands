@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Comprehensive test runner script for Gemini CLI DevContainer Feature
+# Comprehensive test runner script for DevContainer Features
 
 set -e
 
@@ -32,13 +32,13 @@ log_section() {
 # Test configuration
 TEST_TYPES=(
     "default"
-    "version_latest"
     "cross_platform"
     "edge_cases"
     "integration"
     "performance"
     "security"
     "regression"
+    "version_latest"
     "docker_scenarios"
     "version_matrix"
     "manual_verification"
@@ -48,6 +48,11 @@ BASE_IMAGES=(
     "mcr.microsoft.com/devcontainers/base:ubuntu"
     "mcr.microsoft.com/devcontainers/base:debian"
     "mcr.microsoft.com/devcontainers/base:alpine"
+)
+
+FEATURES=(
+    "claude-code-config"
+    "gemini-cli"
 )
 
 # Global variables
@@ -62,6 +67,7 @@ QUICK_MODE=false
 VERBOSE=false
 SELECTED_TESTS=()
 SELECTED_IMAGES=()
+SELECTED_FEATURES=()
 
 usage() {
     cat << EOF
@@ -72,7 +78,11 @@ Options:
     -v, --verbose       Enable verbose output
     -i, --image IMAGE   Test with specific base image (can be repeated)
     -t, --test TEST     Run specific test type (can be repeated)
+    -f, --feature FEAT  Test specific feature (claude-code-config, gemini-cli, or both)
     -h, --help          Show this help message
+
+Features:
+    ${FEATURES[*]}
 
 Test Types:
     ${TEST_TYPES[*]}
@@ -81,11 +91,13 @@ Base Images:
     ${BASE_IMAGES[*]}
 
 Examples:
-    $0                                  # Run all tests
-    $0 --quick                          # Run basic tests only
-    $0 --test default --test security   # Run specific tests
-    $0 --image ubuntu                   # Test with Ubuntu only
-    $0 --verbose                        # Run with verbose output
+    $0                                          # Run all tests for both features
+    $0 --quick                                  # Run basic tests only for both features
+    $0 --feature claude-code-config             # Test claude-code-config only
+    $0 --feature gemini-cli                     # Test gemini-cli only
+    $0 --test default --test security           # Run specific tests for both features
+    $0 --image ubuntu --feature claude-code-config # Test claude-code-config with Ubuntu only
+    $0 --verbose                                # Run with verbose output for both features
 
 EOF
 }
@@ -109,6 +121,21 @@ while [[ $# -gt 0 ]]; do
             SELECTED_TESTS+=("$2")
             shift 2
             ;;
+        -f|--feature)
+            case "$2" in
+                "claude-code-config"|"gemini-cli")
+                    SELECTED_FEATURES+=("$2")
+                    ;;
+                "both")
+                    SELECTED_FEATURES=("${FEATURES[@]}")
+                    ;;
+                *)
+                    log_error "Invalid feature: $2. Must be 'claude-code-config', 'gemini-cli', or 'both'"
+                    exit 1
+                    ;;
+            esac
+            shift 2
+            ;;
         -h|--help)
             usage
             exit 0
@@ -121,9 +148,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Set defaults if nothing selected
+if [ ${#SELECTED_FEATURES[@]} -eq 0 ]; then
+    SELECTED_FEATURES=("${FEATURES[@]}")
+fi
+
 if [ ${#SELECTED_TESTS[@]} -eq 0 ]; then
     if [ "$QUICK_MODE" = true ]; then
-        SELECTED_TESTS=("default" "version_latest" "integration")
+        SELECTED_TESTS=("default" "integration")
     else
         SELECTED_TESTS=("${TEST_TYPES[@]}")
     fi
@@ -161,56 +192,73 @@ check_prerequisites() {
 
 # Validate feature structure
 validate_feature() {
-    log_info "Validating feature structure..."
+    local feature="$1"
+    log_info "Validating $feature feature structure..."
     
     local errors=0
     
-    if [ ! -f "src/gemini-cli/devcontainer-feature.json" ]; then
-        log_error "devcontainer-feature.json not found"
+    if [ ! -f "src/$feature/devcontainer-feature.json" ]; then
+        log_error "$feature/devcontainer-feature.json not found"
         ((errors++))
     fi
     
-    if [ ! -f "src/gemini-cli/install.sh" ]; then
-        log_error "install.sh not found"
+    if [ ! -f "src/$feature/install.sh" ]; then
+        log_error "$feature/install.sh not found"
         ((errors++))
     fi
     
-    if [ ! -x "src/gemini-cli/install.sh" ]; then
-        log_error "install.sh is not executable"
+    if [ ! -x "src/$feature/install.sh" ]; then
+        log_error "$feature/install.sh is not executable"
         ((errors++))
     fi
     
-    if [ ! -f "src/gemini-cli/README.md" ]; then
-        log_warn "README.md not found"
+    if [ ! -f "src/$feature/README.md" ]; then
+        log_warn "$feature/README.md not found"
     fi
     
     if [ $errors -gt 0 ]; then
-        log_error "Feature structure validation failed"
+        log_error "$feature feature structure validation failed"
         exit 1
     fi
     
-    log_info "Feature structure validation passed"
+    log_info "$feature feature structure validation passed"
 }
 
 # Make test scripts executable
 prepare_tests() {
-    log_info "Preparing test scripts..."
+    local feature="$1"
+    log_info "Preparing test scripts for $feature..."
     
-    find test/gemini-cli -name "*.sh" -exec chmod +x {} \;
+    if [ -d "test/$feature" ]; then
+        find "test/$feature" -name "*.sh" -exec chmod +x {} \;
+    fi
     
-    log_info "Test scripts prepared"
+    log_info "Test scripts for $feature prepared"
 }
 
 # Run a single test
 run_test() {
-    local test_type="$1"
-    local image="$2"
-    local test_name="${test_type}_${image##*/}"
+    local feature="$1"
+    local test_type="$2"
+    local image="$3"
+    local test_name="${feature}_${test_type}_${image##*/}"
     
     log_info "Running test: $test_name"
     ((TOTAL_TESTS++))
     
-    local cmd="devcontainer features test -f gemini-cli -i $image ."
+    local cmd="devcontainer features test -f $feature -i $image"
+    
+    # Add specific test type if it's not default
+    if [ "$test_type" != "default" ]; then
+        if [ -f "test/$feature/test_${test_type}.sh" ]; then
+            cmd="$cmd -t test_${test_type}"
+        else
+            log_warn "Test file test_${test_type}.sh not found for $feature, running default test"
+        fi
+    fi
+    
+    cmd="$cmd ."
+    
     if [ "$VERBOSE" = true ]; then
         cmd="$cmd --verbose"
     fi
@@ -318,23 +366,30 @@ trap cleanup EXIT
 
 # Main execution
 main() {
-    log_section "Gemini CLI DevContainer Feature Test Runner"
+    log_section "DevContainer Features Test Runner"
     
     echo "Configuration:"
     echo "  Quick mode: $QUICK_MODE"
     echo "  Verbose: $VERBOSE"
+    echo "  Selected features: ${SELECTED_FEATURES[*]}"
     echo "  Selected tests: ${SELECTED_TESTS[*]}"
     echo "  Selected images: ${SELECTED_IMAGES[*]}"
     echo
     
     check_prerequisites
-    validate_feature
-    prepare_tests
+    
+    # Validate all selected features
+    for feature in "${SELECTED_FEATURES[@]}"; do
+        validate_feature "$feature"
+        prepare_tests "$feature"
+    done
     
     # Run individual tests
-    for test_type in "${SELECTED_TESTS[@]}"; do
-        for image in "${SELECTED_IMAGES[@]}"; do
-            run_test "$test_type" "$image"
+    for feature in "${SELECTED_FEATURES[@]}"; do
+        for test_type in "${SELECTED_TESTS[@]}"; do
+            for image in "${SELECTED_IMAGES[@]}"; do
+                run_test "$feature" "$test_type" "$image"
+            done
         done
     done
     

@@ -1,55 +1,35 @@
 {
-  "gemini-cli_default": {
+  "both_features_default": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-      "gemini-cli": {}
-    }
-  },
-  "gemini-cli_latest_version": {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
+      "claude-code-config": {
+        "repo": "octocat/Hello-World",
+        "branch": "master"
+      },
       "gemini-cli": {
         "version": "latest"
       }
     }
   },
-  "gemini-cli_alpine": {
+  "both_features_debian": {
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "features": {
+      "claude-code-config": {
+        "repo": "octocat/Hello-World",
+        "branch": "master"
+      },
+      "gemini-cli": {
+        "version": "latest"
+      }
+    }
+  },
+  "both_features_alpine": {
     "image": "mcr.microsoft.com/devcontainers/base:alpine",
     "features": {
-      "gemini-cli": {}
-    }
-  },
-  "gemini-cli_debian": {
-    "image": "mcr.microsoft.com/devcontainers/base:debian",
-    "features": {
-      "gemini-cli": {
-        "version": "latest"
-      }
-    }
-  },
-  "gemini-cli_performance": {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-      "gemini-cli": {}
-    }
-  },
-  "gemini-cli_security": {
-    "image": "mcr.microsoft.com/devcontainers/base:debian",
-    "features": {
-      "gemini-cli": {
-        "version": "latest"
-      }
-    }
-  },
-  "gemini-cli_regression": {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-      "gemini-cli": {}
-    }
-  },
-  "gemini-cli_docker": {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
+      "claude-code-config": {
+        "repo": "octocat/Hello-World",
+        "branch": "master"
+      },
       "gemini-cli": {
         "version": "latest"
       }
