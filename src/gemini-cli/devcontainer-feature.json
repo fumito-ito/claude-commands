@@ -1,0 +1,18 @@
+{
+  "id": "gemini-cli",
+  "version": "1.0.0",
+  "name": "Unofficial Gemini CLI",
+  "documentationURL": "https://github.com/google-gemini/gemini-cli",
+  "description": "Install Google Gemini CLI tool for interacting with Google's Gemini AI models",
+  "options": {
+    "version": {
+      "type": "string",
+      "proposals": ["latest"],
+      "default": "latest",
+      "description": "Version of Gemini CLI to install"
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}
