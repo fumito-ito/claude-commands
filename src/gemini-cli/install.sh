@@ -4,8 +4,9 @@ set -e
 # Import the utils
 source ./library_scripts.sh
 
-# Nanolayer utilities
-. /tmp/library-scripts/nanolayer-utils.sh
+# Detect package manager early
+PKG_MANAGER=$(detect_package_manager)
+echo "Detected package manager: $PKG_MANAGER"
 
 VERSION=${VERSION:-"latest"}
 
@@ -51,54 +52,35 @@ echo "Installing dependencies..."
 apt_get_update_if_needed
 check_packages curl ca-certificates
 
-# Create temporary directory
-TEMP_DIR="/tmp/gemini-cli-install"
-mkdir -p ${TEMP_DIR}
-cd ${TEMP_DIR}
+# Install Node.js if not present
+if ! command -v node > /dev/null 2>&1; then
+    echo "Installing Node.js..."
+    PKG_MANAGER=$(detect_package_manager)
+    
+    case $PKG_MANAGER in
+        "apt")
+            # Install Node.js from NodeSource repository
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+            apt-get install -y nodejs
+            ;;
+        "apk")
+            # For Alpine, install Node.js directly
+            apk add --no-cache nodejs npm
+            ;;
+        *)
+            echo "Unknown package manager, cannot install Node.js"
+            exit 1
+            ;;
+    esac
+fi
 
-# Determine architecture
-ARCHITECTURE=$(uname -m)
-case ${ARCHITECTURE} in
-    x86_64) ARCH="x86_64" ;;
-    amd64) ARCH="x86_64" ;;
-    aarch64) ARCH="arm64" ;;
-    arm64) ARCH="arm64" ;;
-    *) echo "Unsupported architecture: ${ARCHITECTURE}"; exit 1 ;;
-esac
-
-# Determine OS
-OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-
-# Get the latest release if version is "latest"
+# Install gemini-cli using npm
+echo "Installing Gemini CLI using npm..."
 if [ "${VERSION}" = "latest" ]; then
-    echo "Fetching latest version..."
-    LATEST_VERSION=$(curl -s https://api.github.com/repos/google-gemini/gemini-cli/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [ -z "${LATEST_VERSION}" ]; then
-        echo "Failed to get latest version"
-        exit 1
-    fi
-    VERSION=${LATEST_VERSION}
-fi
-
-echo "Installing Gemini CLI version: ${VERSION}"
-
-# Download the binary
-BINARY_NAME="gemini-${OS}-${ARCH}"
-if [ "${OS}" = "linux" ]; then
-    DOWNLOAD_URL="https://github.com/google-gemini/gemini-cli/releases/download/${VERSION}/gemini-${OS}-${ARCH}"
+    npm install -g @google/gemini-cli
 else
-    echo "Unsupported OS: ${OS}"
-    exit 1
+    npm install -g @google/gemini-cli@${VERSION}
 fi
-
-echo "Downloading from: ${DOWNLOAD_URL}"
-curl -L -o gemini "${DOWNLOAD_URL}"
-
-# Make executable
-chmod +x gemini
-
-# Install to /usr/local/bin
-mv gemini /usr/local/bin/
 
 # Verify installation
 if command -v gemini > /dev/null 2>&1; then
@@ -108,9 +90,5 @@ else
     echo "Failed to install Gemini CLI"
     exit 1
 fi
-
-# Clean up
-cd /
-rm -rf ${TEMP_DIR}
 
 echo "Installation complete!"
