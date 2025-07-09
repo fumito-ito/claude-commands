@@ -36,5 +36,14 @@
         "features": {
             "claude-code-config": {}
         }
+    },
+    "file_permissions": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "claude-code-config": {
+                "repo": "octocat/Hello-World",
+                "branch": "master"
+            }
+        }
     }
 }

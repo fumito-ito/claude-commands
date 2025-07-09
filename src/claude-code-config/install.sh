@@ -77,4 +77,20 @@ else
     echo "Created empty .claude directory"
 fi
 
+# Set proper permissions for devcontainer user
+# Get the default devcontainer user (usually vscode)
+DEFAULT_USER=${_REMOTE_USER:-"vscode"}
+
+# Check if the user exists
+if id "$DEFAULT_USER" >/dev/null 2>&1; then
+    echo "Setting ownership of .claude directory to $DEFAULT_USER"
+    chown -R "$DEFAULT_USER:$DEFAULT_USER" /workspaces/.claude
+    chmod -R 755 /workspaces/.claude
+    # Make files writable by the owner
+    find /workspaces/.claude -type f -exec chmod 644 {} \;
+else
+    echo "Warning: User $DEFAULT_USER not found. Setting permissions to be world-writable."
+    chmod -R 777 /workspaces/.claude
+fi
+
 echo "Claude Repository feature installed successfully!"
