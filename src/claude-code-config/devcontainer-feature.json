@@ -25,7 +25,7 @@
         "CLAUDE_BRANCH": "${branch}",
         "CLAUDE_TOKEN": "${token}"
     },
-    "dependencies": [
+    "installsAfter": [
         "ghcr.io/devcontainers/features/common-utils"
     ]
 }
