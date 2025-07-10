@@ -1,6 +1,6 @@
 # Makefile for DevContainer Features testing
 
-.PHONY: test test-local test-scenarios test-all clean help
+.PHONY: test test-local test-scenarios test-all clean help copy-features
 .PHONY: test-claude test-gemini test-both
 .PHONY: test-claude-default test-claude-cross-platform test-claude-edge-cases
 .PHONY: test-claude-integration test-claude-security test-claude-performance test-claude-regression
@@ -17,6 +17,7 @@ help:
 	@echo "  test-claude  - Run all tests for claude-code-config"
 	@echo "  test-gemini  - Run all tests for gemini-cli"
 	@echo "  test-both    - Run all tests for both features"
+	@echo "  copy-features - Copy features to .devcontainer/features"
 	@echo "  clean        - Clean up test artifacts"
 	@echo "  help         - Show this help message"
 
@@ -78,6 +79,14 @@ test-alpine:
 # Test multiple images
 test-multi: test-ubuntu test-debian
 	@echo "Multi-image testing completed!"
+
+# Copy features to .devcontainer/features
+copy-features:
+	@echo "Copying features to .devcontainer/features..."
+	mkdir -p .devcontainer/features
+	cp -r src/claude-code-config .devcontainer/features/
+	cp -r src/gemini-cli .devcontainer/features/
+	@echo "Features copied successfully!"
 
 # Clean up any test artifacts
 clean:
