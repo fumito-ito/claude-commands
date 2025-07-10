@@ -1,6 +1,6 @@
 # Claude Code config Feature
 
-This repository contains a [Dev Container Feature](https://containers.dev/implementors/features/) that clones GitHub repositories into the `.claude` directory for Claude integration.
+This repository contains a [Dev Container Feature](https://containers.dev/implementors/features/) that clones GitHub repositories into the `.claude` directory at the project root for Claude integration.
 
 ## Contents
 
@@ -41,6 +41,14 @@ The token will be used securely during the container build process and will not 
 ## Requirements
 
 The feature automatically installs Git if not already present.
+
+## Behavior
+
+The feature clones the specified repository into a `.claude` directory at the project root:
+- If `CONTAINERWORKSPACEFOLDER` is set, it creates `.claude` in that directory
+- Otherwise, it detects the project directory within `/workspaces/` and creates `.claude` there
+- For example, if your project is in `/workspaces/my-project`, the `.claude` directory will be created at `/workspaces/my-project/.claude`
+- A runtime setup script ensures the `.claude` directory is created at the correct location when the container starts
 
 ## Building and Testing
 
