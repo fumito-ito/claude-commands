@@ -1,0 +1,14 @@
+{
+    "name": "Test DevContainer",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "./features/claude-code-config": {
+        "repo": "fumito-ito/.claude",
+        "branch": "main"
+      },
+      "./features/gemini-cli": {
+        "version": "latest"
+      },
+      "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+    }
+}
