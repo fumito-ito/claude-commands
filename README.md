@@ -91,6 +91,14 @@ make test-alpine
 - DevContainer CLI (`npm install -g @devcontainers/cli`)
 - Docker with daemon running
 
+### Publishing
+
+Features are automatically published to GitHub Container Registry when changes are pushed to the main branch via GitHub Actions.
+
+**Package URLs:**
+- [claude-code-config](https://github.com/users/fumito-ito/packages/container/devcontainer-features%2Fclaude-code-config/settings)
+- [gemini-cli](https://github.com/users/fumito-ito/packages/container/devcontainer-features%2Fgemini-cli/settings)
+
 ## License
 
 MIT License

@@ -38,3 +38,9 @@ Temporary Items
 
 .devcontainer/features
 .claude
+
+# VS Code
+.vscode/
+
+# DevContainer test artifacts
+.devcontainer-test-*
