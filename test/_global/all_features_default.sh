@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Test script for both features on Debian base image
+# Test script for all features with default settings
 
 set -e
 
@@ -9,6 +9,9 @@ source dev-container-features-test-lib
 
 # Test that gemini-cli is installed
 check "gemini-cli version" bash -c "gemini --version"
+
+# Test that codex-cli is installed
+check "codex-cli version" bash -c "codex --version"
 
 # Test that .claude directory exists
 check "claude directory exists" test -d "/workspaces/.claude"
@@ -21,6 +24,13 @@ check "repository cache exists" test -d "/tmp/claude-repo-cache"
 
 # Test that the runtime setup script exists
 check "runtime setup script exists" test -f "/usr/local/bin/claude-setup.sh"
+
+# Test that both CLI tools are executable
+check "gemini is executable" test -x "$(command -v gemini)"
+check "codex is executable" test -x "$(command -v codex)"
+
+# Test that Node.js is installed (required for both CLI tools)
+check "node command exists" command -v node
 
 # Report results
 reportResults

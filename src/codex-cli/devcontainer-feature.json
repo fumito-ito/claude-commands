@@ -1,0 +1,18 @@
+{
+  "id": "codex-cli",
+  "version": "1.0.0",
+  "name": "OpenAI Codex CLI",
+  "documentationURL": "https://github.com/openai/codex",
+  "description": "Install OpenAI Codex CLI tool - a lightweight coding agent that runs in your terminal",
+  "options": {
+    "version": {
+      "type": "string",
+      "proposals": ["latest"],
+      "default": "latest",
+      "description": "Version of Codex CLI to install"
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

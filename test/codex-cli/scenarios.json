@@ -1,0 +1,58 @@
+{
+  "codex-cli_default": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "codex-cli": {}
+    }
+  },
+  "codex-cli_latest_version": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "codex-cli": {
+        "version": "latest"
+      }
+    }
+  },
+  "codex-cli_alpine": {
+    "image": "mcr.microsoft.com/devcontainers/base:alpine",
+    "features": {
+      "codex-cli": {}
+    }
+  },
+  "codex-cli_debian": {
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "features": {
+      "codex-cli": {
+        "version": "latest"
+      }
+    }
+  },
+  "codex-cli_performance": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "codex-cli": {}
+    }
+  },
+  "codex-cli_security": {
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "features": {
+      "codex-cli": {
+        "version": "latest"
+      }
+    }
+  },
+  "codex-cli_regression": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "codex-cli": {}
+    }
+  },
+  "codex-cli_docker": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "codex-cli": {
+        "version": "latest"
+      }
+    }
+  }
+}

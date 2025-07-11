@@ -1,5 +1,5 @@
 {
-  "both_features_default": {
+  "all_features_default": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
       "claude-code-config": {
@@ -8,10 +8,13 @@
       },
       "gemini-cli": {
         "version": "latest"
+      },
+      "codex-cli": {
+        "version": "latest"
       }
     }
   },
-  "both_features_debian": {
+  "all_features_debian": {
     "image": "mcr.microsoft.com/devcontainers/base:debian",
     "features": {
       "claude-code-config": {
@@ -20,10 +23,13 @@
       },
       "gemini-cli": {
         "version": "latest"
+      },
+      "codex-cli": {
+        "version": "latest"
       }
     }
   },
-  "both_features_alpine": {
+  "all_features_alpine": {
     "image": "mcr.microsoft.com/devcontainers/base:alpine",
     "features": {
       "claude-code-config": {
@@ -31,6 +37,9 @@
         "branch": "master"
       },
       "gemini-cli": {
+        "version": "latest"
+      },
+      "codex-cli": {
         "version": "latest"
       }
     }
